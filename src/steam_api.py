@@ -26,15 +26,61 @@ GENRE_TAG_MAP = {
 
 
 def _get_credentials():
-    """Lê API key e Steam ID do st.secrets (cloud) ou variáveis de ambiente (local)."""
+    """Lê API key e Steam ID com múltiplos fallbacks."""
+    api_key  = ""
+    steam_id = ""
+
+    # 1. st.secrets (Streamlit Cloud ou secrets.toml local)
     try:
-        api_key = st.secrets["STEAM_API_KEY"]
-        steam_id = st.secrets["STEAM_ID"]
+        api_key  = str(st.secrets.get("STEAM_API_KEY", ""))
+        steam_id = str(st.secrets.get("STEAM_ID", ""))
     except Exception:
-        from dotenv import load_dotenv
-        load_dotenv()
-        api_key = os.environ.get("STEAM_API_KEY", "")
-        steam_id = os.environ.get("STEAM_ID", "")
+        pass
+
+    # 2. Variáveis de ambiente / .env
+    if not api_key or not steam_id:
+        try:
+            from dotenv import load_dotenv
+            # Caminho absoluto do .env na raiz do projeto
+            env_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), ".env")
+            load_dotenv(env_path)
+        except Exception:
+            pass
+        api_key  = api_key  or os.environ.get("STEAM_API_KEY", "")
+        steam_id = steam_id or os.environ.get("STEAM_ID", "")
+
+    # 3. Leitura direta do secrets.toml como fallback final
+    if not api_key or not steam_id:
+        try:
+            import tomllib  # Python 3.11+
+        except ImportError:
+            try:
+                import tomli as tomllib  # pip install tomli
+            except ImportError:
+                tomllib = None
+
+        if tomllib:
+            secrets_path = os.path.join(
+                os.path.dirname(os.path.dirname(__file__)),
+                ".streamlit", "secrets.toml"
+            )
+            try:
+                with open(secrets_path, "rb") as f:
+                    data = tomllib.load(f)
+                api_key  = api_key  or data.get("STEAM_API_KEY", "")
+                steam_id = steam_id or data.get("STEAM_ID", "")
+            except Exception:
+                pass
+
+    if not api_key or not steam_id:
+        raise ValueError(
+            "Credenciais Steam não encontradas.\n"
+            "Configure STEAM_API_KEY e STEAM_ID em:\n"
+            "  • .streamlit/secrets.toml  (local)\n"
+            "  • .env  (local)\n"
+            "  • Streamlit Cloud → App settings → Secrets"
+        )
+
     return api_key, steam_id
 
 
