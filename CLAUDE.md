@@ -4,6 +4,9 @@
 
 GameDash é um dashboard Streamlit que consome a Steam Web API, armazena dados em SQLite e exibe estatísticas, conquistas e recomendações de jogos com design inspirado na Steam.
 
+- **Live:** https://gamedash7.streamlit.app/
+- **Repositório:** https://github.com/guiharaujo/GameDash
+
 ---
 
 ## Arquitetura

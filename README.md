@@ -2,6 +2,8 @@
 
 Dashboard pessoal da Steam com estatísticas, conquistas e recomendações de jogos — construído com Python + Streamlit.
 
+[![Live Demo](https://img.shields.io/badge/🚀%20Live%20Demo-gamedash7.streamlit.app-66c0f4?style=for-the-badge)](https://gamedash7.streamlit.app/)
+
 ![Tema Steam](https://img.shields.io/badge/tema-Steam%20Dark-1b2838?style=flat&logo=steam)
 ![Python](https://img.shields.io/badge/python-3.9%2B-blue)
 ![Streamlit](https://img.shields.io/badge/streamlit-1.32%2B-FF4B4B)
@@ -86,6 +88,11 @@ Clique em **"🔄 Sincronizar dados"** na barra lateral. A sincronização busca
 > A sincronização pode levar alguns minutos dependendo do tamanho da biblioteca.
 
 ---
+
+## Deploy
+
+> **App em produção:** [https://gamedash7.streamlit.app/](https://gamedash7.streamlit.app/)
+> **Repositório:** [https://github.com/guiharaujo/GameDash](https://github.com/guiharaujo/GameDash)
 
 ## Deploy no Streamlit Cloud (gratuito)
 
